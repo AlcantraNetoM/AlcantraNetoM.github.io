@@ -1,0 +1,46 @@
+
+img{
+    width: 300px;
+    height: auto;
+}
+
+.poema{
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-left: 4px solid #6a5acd;
+
+}
+
+.poema p:nth-child(odd){
+    color: #6a6a6a;
+    font-style: italic;
+}
+
+.poema p:nth-child(even){
+    color: #333;
+    font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+th {
+  background-color: #6a5acd;
+  color: white; /* cor do texto das células do cabeçalho */
+  padding: 10px;
+  text-align: left;
+}
+
+td {
+  background-color: #f0f0f0;
+  color: #333; /* cor do texto das células do corpo */
+  padding: 8px;
+  border: 1px solid #ccc;
+}
