@@ -1,10 +1,101 @@
 
-img{
-    width: 300px;
-    height: auto;
+/* Reset simples */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.poema{
+/* Corpo da página */
+body {
+    background-color: #f0f0f5;
+    color: #333;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #6a5acd;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Navegação */
+nav {
+    margin-top: 10px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+}
+
+nav ul li a {
+    color: green;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Conteúdo principal */
+main {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Imagem representativa */
+main img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto; /* espaçamento vertical */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Footer */
+footer {
+    background-color: #6a5acd;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    border-radius: 0 0 10px 10px;
+}
+
+/* Tabela (info.html) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th {
+    background-color: #6a5acd;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Poema (multimedia.html) */
+.poema {
     font-family: 'Georgia', serif;
     font-size: 1.2rem;
     line-height: 1.6;
@@ -12,35 +103,42 @@ img{
     padding: 10px;
     background-color: #f8f8f8;
     border-left: 4px solid #6a5acd;
-
 }
 
-.poema p:nth-child(odd){
-    color: #6a6a6a;
+.poema p:nth-child(odd) {
+    color: #6a5acd;
     font-style: italic;
 }
 
-.poema p:nth-child(even){
+.poema p:nth-child(even) {
     color: #333;
     font-weight: bold;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
+/* Galeria de fotografias */
+.fotografias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
 
-th {
-  background-color: #6a5acd;
-  color: white; /* cor do texto das células do cabeçalho */
-  padding: 10px;
-  text-align: left;
+.fotografias img {
+    width: 150px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
 }
 
-td {
-  background-color: #f0f0f0;
-  color: #333; /* cor do texto das células do corpo */
-  padding: 8px;
-  border: 1px solid #ccc;
+.fotografias img:hover {
+    transform: scale(1.05);
+}
+
+/* Secção Vídeo */
+iframe {
+    width: 100%;
+    max-width: 600px;
+    height: 350px;
+    display: block;
+    margin: 20px auto;
 }
