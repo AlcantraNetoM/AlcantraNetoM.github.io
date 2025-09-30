@@ -19,8 +19,20 @@
         </div>
     </section>
 
+    <header>
+        <nav class="city-navbar">
+            <div class="city-logo">Lisboa 🌍</div>
+            <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+            <ul class="city-nav-links">
+                <li><a href="Lab3/index.html">Início</a></li>
+                <li><a href="Lab3/info.html">Informação</a></li>
+                <li><a href="Lab3/local.html">Local</a></li>
+                <li><a href="Lab3/multimedia.html">Multimedia</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <main>
-        <!-- Conteúdo já existente -->
         <p>Eis a minha primeira página Web</p>
 
         <p>
@@ -31,36 +43,60 @@
             abordaremos as seguintes tecnologias Web &#127760;:
         </p>
 
-        <img src="imagens/diw.svg" alt="Desenvolvimento de Interfaces Web">
+        <!-- Secção Disciplina -->
+        <section id="disciplina" class="disciplina">
+            <h2>Disciplina</h2>
+            <div class="disciplina-container">
+                <div class="disciplina-texto">
+                    <p>
+                        Desenvolvimento de interfaces web é uma disciplina focada na criação
+                        de páginas usando HTML5, CSS3, design responsivo, entre outras
+                        ferramentas. O objetivo é ensinar boas práticas.
+                    </p>
+                </div>
 
-        <!-- Novas Secções Lab3 -->
+                <div class="disciplina-imagem">
+                    <img src="imagens/diw.svg" alt="Wordcloud Desenvolvimento de Interfaces Web">
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Secções projetos -->
         <section id="projetos" class="projetos">
             <h2>Projetos</h2>
 
-            <nav>
-                <ul>
-                    <li><a href="Lab1/index.html">Lab 1</a></li>
-                    <li><a href="Lab2/index.html">Lab 2</a></li>
-                    <li><a href="Lab3/index.html">Lab 3</a></li>
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Lab 1</h3>
+                    <p>Estrutura base e semântica.</p>
+                    <a href="Lab1/index.html" class="btn-card">Ver Projeto</a>
+                </div>
 
-                </ul>
-            </nav>
+                <div class="card">
+                    <h3>Lab 2</h3>
+                    <p>Estilos e layouts responsivo.</p>
+                    <a href="Lab2/index.html" class="btn-card">Ver Projeto</a>
+                </div>
+
+                <div class="card">
+                    <h3>Lab 3</h3>
+                    <p>Interatividade em JS.</p>
+                    <a href="Lab3/index.html" class="btn-card">Ver Projeto</a>
+                </div>
+            </div>
 
             <p>Aqui vais encontrar os laboratórios e trabalhos da disciplina.</p>
         </section>
 
-        <section id="disciplina" class="disciplina">
-            <h2>Disciplina</h2>
-            <p>Desenvolvimento de interfaces web é uma disciplina focada na criação 
-                de páginas usando HTML5, CSS3, design responsivo, enntre outras 
-                ferramentas. O objetivo é ensinar a boa prática. 
-            </p>
-        </section>
+        <selection>
+            <img src="imagens/diw.svg" alt="Desenvolvimento de Interfaces Web">
+        </selection>
 
     </main>
 
     <footer>
-        <p>Universidade Lusófona 2025</p>
+        <p>&copy; Universidade Lusófona 2025</p>
     </footer>
 
 </body>
