@@ -1,93 +1,83 @@
-/* ========================================================= */
-/* RESET E ESTILOS GERAIS */
-/* ========================================================= */
+/* ====================================================== */
+/* RESET SIMPLES */
+/* ====================================================== */
 * {
-    /* Remove margens e paddings padrão, aplica box-sizing border-box */
-    font-family: sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
+/* ====================================================== */
+/* BODY - CORPO DA PÁGINA */
+/* ====================================================== */
 body {
-    /* Cor de fundo, cor do texto, fonte e espaçamento */
     background-color: #f0f0f5;
     color: #333;
-    font-family: Arial, sans-serif;
     line-height: 1.6;
     padding: 20px;
 }
 
-h1, h2, h3, p {
-    /* Margem inferior consistente */
-    margin-bottom: 1rem;
-}
-
-/* ========================================================= */
-/* HEADER E FOOTER */
-/* ========================================================= */
-header,
-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 5vh; /* tamanho relativo à altura da viewport */
-}
-
+/* ====================================================== */
+/* HEADER - LOGO E NAVEGAÇÃO */
+/* ====================================================== */
 header {
-    justify-content: space-between; /* logo à esquerda, nav à direita */
-    gap: 10px;
     background-color: #6a5acd;
     color: white;
-    position: sticky; /* fica fixo no topo */
-    height: 10vh;
-    top: 0;
-}
-
-footer {
-    background-color: #6a5acd;
-    color: black;
     text-align: center;
-    padding: 15px;
-    margin-top: 30px;
-    border-radius: 0 0 10px 10px;
+    padding: 20px 0;
 }
 
-/* ========================================================= */
-/* HERO SECTION */
-/* ========================================================= */
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: green;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+    background-color: #ff6600;
+    color: white;
+}
+
+/* ====================================================== */
+/* HERO SECTION - RAIZ/INDEX.HTML */
+/* ====================================================== */
 .hero {
-    /* Ocupa toda a altura da tela e coloca imagem de fundo */
     position: relative;
-    height: 100vh;
-    background-image: url("imagens/lisboa.jpg");
-    background-size: cover; /* cobre todo o elemento */
-    background-position: center; /* centraliza a imagem */
-    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.hero-content {
-    position: absolute;
-    top: 40%;
-    left: 10%;
+    height: 80vh;
     color: white;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6); /* melhora leitura */
+    text-align: center;
 }
 
-.hero h1 {
-    font-size: 3rem;
+.hero-content h2 {
+    font-size: 3vw;
 }
 
-.hero p {
-    font-size: 1.5rem;
+.hero-content p {
+    font-size: 1.5vw;
     margin: 1rem 0;
 }
 
 .btn {
-    /* Botão principal */
     display: inline-block;
     padding: 12px 24px;
     background-color: #ff6600;
@@ -100,260 +90,43 @@ footer {
 
 .btn:hover {
     background-color: #e65c00;
-    transform: scale(1.05); /* aumenta levemente ao passar o mouse */
-}
-
-/* ========================================================= */
-/* NAVEGAÇÃO PRINCIPAL (nav tradicional) */
-/* ========================================================= */
-nav {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-}
-
-nav ul {
-    list-style: none; /* remove bullets */
-    padding: 0;
-    display: flex; /* itens em linha */
-    margin: 0;
-    gap: 1rem;
-}
-
-nav a {
-    text-decoration: none;
-    color: black;
-    padding: 10px 20px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 2px 3px 3px lightgrey;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
-    filter: brightness(90%);
-}
-
-/* ========================================================= */
-/* CITY NAVBAR (MENU RESPONSIVO DAS CIDADES) */
-/* ========================================================= */
-.city-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    padding: 12px 20px;
-    flex-wrap: wrap; /* permite quebra de linha em telas menores */
-}
-
-.city-logo {
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.3rem;
-}
-
-.city-nav-links {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-}
-
-.city-nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-}
-
-.city-nav-links a:hover {
-    background-color: #ff6600;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transform: translateY(-3px);
-}
-
-/* ========================================================= */
-/* CONTEÚDO PRINCIPAL */
-/* ========================================================= */
-main {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto; /* centraliza o conteúdo */
-}
-
-/* Imagens dentro do main */
-main img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* ========================================================= */
-/* CARDS (Projetos) */
-/* ========================================================= */
-.cards-container {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap; /* permite quebra em telas pequenas */
-    margin-top: 20px;
-}
-
-.card {
-    background: #f8f8f8;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    text-align: center;
-    transition: transform 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.btn-card {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 16px;
-    background-color: #0077cc;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.btn-card:hover {
-    background-color: #005fa3;
-}
-
-/* ========================================================= */
-/* TABELA (info.html) */
-/* ========================================================= */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-th {
-    background-color: #6a5acd;
-    color: white;
-    padding: 10px;
-    text-align: left;
-}
-
-td {
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 8px;
-    border: 1px solid #ccc;
-}
-
-/* ========================================================= */
-/* POEMA (multimedia.html) */
-/* ========================================================= */
-.poema {
-    font-family: 'Georgia', serif;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin: 20px 0;
-    padding: 10px;
-    background-color: #f8f8f8;
-    border-left: 4px solid #6a5acd;
-}
-
-.poema p:nth-child(odd) {
-    color: #6a5acd;
-    font-style: italic;
-}
-
-.poema p:nth-child(even) {
-    color: #333;
-    font-weight: bold;
-}
-
-/* ========================================================= */
-/* GALERIA DE FOTOGRAFIAS (multimedia.html) */
-/* ========================================================= */
-.fotografias {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-}
-
-.fotografias img {
-    width: 150px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s;
-}
-
-.fotografias img:hover {
     transform: scale(1.05);
 }
 
-/* ========================================================= */
-/* VÍDEO (multimedia.html) */
-/* ========================================================= */
-.video-container,
-iframe {
-    width: 100%;
-    max-width: 600px;
-    height: 350px;
-    display: block;
-    margin: 20px auto;
+/* ====================================================== */
+/* MAIN - CONTEÚDO CENTRAL */
+/* ====================================================== */
+main {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-/* ========================================================= */
-/* RESPONSIVIDADE (MEDIA QUERIES) */
-/* ========================================================= */
-
-/* Tablet */
-@media (max-width: 1024px) {
-    .city-nav-links {
-        flex-wrap: wrap; /* quebra de linha se não couber */
-        justify-content: center;
-        gap: 15px;
-    }
+/* ====================================================== */
+/* FOOTER */
+/* ====================================================== */
+footer {
+    background-color: #6a5acd;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    border-radius: 0 0 10px 10px;
 }
 
-/* Mobile */
+/* ====================================================== */
+/* RESPONSIVIDADE */
+/* ====================================================== */
 @media (max-width: 768px) {
-
-    /* Menu vertical */
-    .city-navbar {
-        flex-direction: column; /* logo em cima, links embaixo */
-        align-items: center;
+    nav ul {
+        flex-direction: column;
     }
 
-    .city-nav-links {
-        flex-direction: column; /* links empilhados */
-        width: 90%;
-        margin-top: 10px;
-        gap: 10px;
+    .hero-content h2 {
+        font-size: 5vw;
     }
 
-    .city-nav-links a {
-        display: block;
-        width: 100%;
-        text-align: center;
-        padding: 12px 0;
-        background-color: #444;
-        font-size: 1.1rem;
+    .hero-content p {
+        font-size: 3vw;
     }
-
-    .city-nav-links a:hover {
-        background-color: #ff6600;
-        transform: scale(1.05);
-    }
-
-   
+}
