@@ -66,6 +66,7 @@ nav ul li a:hover {
     height: 80vh;
     color: white;
     text-align: center;
+    background-color: #333;
 }
 
 .hero-content h2 {
