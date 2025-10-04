@@ -48,6 +48,7 @@ nav a:hover {
     justify-content: center;
     align-items: center;
     text-align: center;
+    background-image: url(imagens/hero-image2.jpg);
 }
 
 .hero-text {
