@@ -1,39 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Lab4/css/style.css">
     <title>Example</title>
 </head>
+
 <body>
     <header>
-        <h1>Lab4</h1>
-        <p>Olá eu me chamo Alcantra Manuel</p>
-        
+        <h1>Bem-vindo à Página Interativa!</h1>
+        <p>Passe o rato e clique para descobrir!</p>
     </header>
 
     <main>
-        <section>
-            <h2>Ceu aberto</h2>
-            <img src="images/imageSpace.jpg" alt="imageSpace">
-        </section>
+        <h2 id="passar" onmouseover="mudarCor(this)" onmouseout="voltarCor(this)">1. Passar aqui</h2>
 
-         <section>
-            <h2>Botões</h2>
-            <button id="btn1">Botão 1</button>
-            <button id="btn2">Botão 2</button>
-        </section>
+        <h3>2. Pinta-me!</h3>
+        <div class="quadrados">
+            <div class="quadrado" id="vermelho" style="background-color:red" onclick="pintar('red')"></div>
+            <div class="quadrado" id="verde" style="background-color:green" onclick="pintar('green')"></div>
+            <div class="quadrado" id="azul" style="background-color:blue" onclick="pintar('blue')"></div>
+        </div>
+        <p id="resultadoCor"></p>
 
-        
+        <h3>3. Experimenta escrever...</h3>
+        <input type="text" id="mensagem" placeholder="Escreve aqui..." onmousemove="mostrarDica()"
+            onmouseout="esconderDica()">
+        <p id="dica"></p>
+
+        <h3>4. Escolha uma cor em inglês:</h3>
+        <input type="text" id="corInput" placeholder="Ex: red, blue, green">
+        <button onclick="mudarFundo()">Submeter</button>
+
+        <div class="contador">
+            <h3>5. <button onclick="contar()">Conta!</button>
+            <span id="numero">50</span>
+            </h3>
+            
+            
+        </div>
+
+        <img id="imagem" src="https://picsum.photos/200" alt="Imagem aleatória" ondblclick="trocarImagem()">
     </main>
 
     <footer>
-        <p>Alcantra Manuel</p>
-
+        <p>Universidade Lusofona De lisboa © 2025</p>
     </footer>
 
-    <!-- HTML já carregado! -->
     <script src="scripts/main.js"></script>
 </body>
+
 </html>
