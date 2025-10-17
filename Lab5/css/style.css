@@ -1,0 +1,64 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+header, footer {
+  background-color: #333;
+  color: white;
+  padding: 15px;
+}
+
+main {
+  padding: 20px;
+}
+
+.quadrados {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.quadrado {
+  width: 80px;
+  height: 80px;
+  border: 3px solid black;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.quadrado:hover {
+  transform: scale(1.1);
+}
+
+.contador {
+  margin: 20px;
+  font-size: 1.5em;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #333;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+img {
+  margin-top: 20px;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+img:hover {
+  transform: scale(1.05);
+}
