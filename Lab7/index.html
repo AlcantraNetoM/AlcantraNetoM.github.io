@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja</title>
+    <title>Loja DEISI</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <header>
-        <h1>Loja</h1>
+        <div class="logo">
+            <img src="https://content.gitbook.com/content/bPWx9vKS3mMS2r0gWzUY/blobs/eHHanZKj25UxABHhfmcI/deisi-ball.png"
+                alt="Logo DEISI" />
+            <h1>Loja DEISI</h1>
+        </div>
         <nav>
             <a href="#">Produtos</a>
             <a href="#">Cesto</a>
@@ -18,20 +22,51 @@
     </header>
 
     <main>
+        <section class="filtros">
+            <label for="filtro">Filtrar:</label>
+            <select id="filtro">
+                <option value="all">Todas as categorias</option>
+            </select>
+
+            <label for="ordenar">Ordenar:</label>
+            <select id="ordenar">
+                <option value="none">Ordenar pelo preço</option>
+                <option value="asc">Preço Crescente</option>
+                <option value="desc">Preço Decrescente</option>
+            </select>
+
+            <label for="pesquisa">Procurar:</label>
+            <input id="pesquisa" type="text" placeholder="Pesquise por produto...">
+        </section>
+
         <section id="produtos" class="produtos"></section>
 
         <section class="cesto">
             <h2>Produtos Selecionados</h2>
-            <ul id="lista-cesto"></ul>
+            <div id="lista-cesto" class="lista-cesto"></div>
             <p id="total">Custo total: 0.00 €</p>
+
+            <div class="checkout">
+                <p>
+                    <label>
+                        <input type="checkbox" id="estudante"> És estudante do DEISI?
+                    </label>
+                </p>
+                <p>
+                    <label for="cupao">Cupão de desconto:</label>
+                    <input type="text" id="cupao" placeholder="Digite o seu cupão">
+                </p>
+                <button id="btn-comprar">Comprar</button>
+            </div>
+
+            <div id="resultado-compra" class="resultado-compra"></div>
         </section>
     </main>
 
     <footer>
-        <p>2024</p>
+        <p>© 2025 Loja DEISI</p>
     </footer>
 
-    <script src="produtos.js"></script>
     <script src="main.js"></script>
 </body>
 

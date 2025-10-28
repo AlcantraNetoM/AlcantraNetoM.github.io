@@ -1,62 +1,94 @@
-// Espera até que o DOM esteja completamente carregado
 document.addEventListener("DOMContentLoaded", () => {
-    carregarProdutos(produtos);
+    carregarCategorias();
+    carregarProdutos();
+    carregarDoLocalStorage();
+
+    document.getElementById("filtro").addEventListener("change", aplicarFiltros);
+    document.getElementById("ordenar").addEventListener("change", aplicarFiltros);
+    document.getElementById("pesquisa").addEventListener("input", aplicarFiltros);
 });
 
-// Função principal: recebe a lista de produtos e renderiza-os no DOM
-function carregarProdutos(listaProdutos) {
-    const secaoProdutos = document.getElementById("produtos");
-
-    // percorre todos os produtos da lista
-    listaProdutos.forEach(produto => {
-        console.log(produto.id, produto.title);
-
-        const artigo = criarProduto(produto);
-        secaoProdutos.append(artigo);
-    });
-}
-
-// Cria e retorna um elemento <article> com as informações do produto
-function criarProduto(produto) {
-    const article = document.createElement("article");
-    article.classList.add("produto");
-
-    // Título
-    const titulo = document.createElement("h3");
-    titulo.textContent = produto.title;
-
-    // Imagem
-    const imagem = document.createElement("img");
-    imagem.src = produto.image;
-    imagem.alt = produto.title;
-
-    // Descrição
-    const descricao = document.createElement("p");
-    descricao.textContent = produto.description.substring(0, 100) + "...";
-
-    // Preço
-    const preco = document.createElement("p");
-    preco.innerHTML = `<strong>${produto.price.toFixed(2)} €</strong>`;
-
-    // Botão de adicionar
-    const botao = document.createElement("button");
-    botao.textContent = "+ Adicionar ao Cesto";
-    botao.dataset.id = produto.id;
-    botao.addEventListener("click", () => adicionarAoCesto(produto.id));
-
-    //Estrutura do artigo
-    article.append(titulo, imagem, descricao, preco, botao);
-
-    return article;
-}
-
+const API_URL = "https://deisishop.pythonanywhere.com";
+let produtos = [];
 let cesto = [];
 let total = 0;
 
-function adicionarAoCesto(id) {
-    const produto = produtos.find(p => p.id === id);
-    if (!produto) return;
+// ---------- FETCH DE PRODUTOS ----------
+function carregarProdutos(categoria = "") {
+    let url = `${API_URL}/products`;
+    if (categoria && categoria !== "all") url += `/category/${categoria}`;
 
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            produtos = data;
+            renderizarProdutos(produtos);
+        })
+        .catch(error => console.error("Erro ao carregar produtos:", error));
+}
+
+// ---------- FETCH DE CATEGORIAS ----------
+function carregarCategorias() {
+    fetch(`${API_URL}/categories`)
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById("filtro");
+            data.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat;
+                option.textContent = cat;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Erro ao carregar categorias:", error));
+}
+
+// ---------- RENDERIZAR PRODUTOS ----------
+function renderizarProdutos(lista) {
+    const container = document.getElementById("produtos");
+    container.innerHTML = "";
+
+    lista.forEach(produto => {
+        const article = document.createElement("article");
+        article.classList.add("produto");
+
+        article.innerHTML = `
+      <img src="${produto.image}" alt="${produto.title}">
+      <h3>${produto.title}</h3>
+      <p>${produto.description.substring(0, 100)}...</p>
+      <p><strong>${produto.price.toFixed(2)} €</strong></p>
+      <button data-id="${produto.id}">+ Adicionar ao Cesto</button>
+    `;
+
+        const btn = article.querySelector("button");
+        btn.addEventListener("click", () => adicionarAoCesto(produto));
+
+        container.appendChild(article);
+    });
+}
+
+// ---------- FILTROS / SORT / SEARCH ----------
+function aplicarFiltros() {
+    const categoria = document.getElementById("filtro").value;
+    const ordem = document.getElementById("ordenar").value;
+    const pesquisa = document.getElementById("pesquisa").value.toLowerCase();
+
+    let filtrados = produtos.filter(p =>
+        p.title.toLowerCase().includes(pesquisa)
+    );
+
+    if (categoria !== "all") {
+        filtrados = filtrados.filter(p => p.category === categoria);
+    }
+
+    if (ordem === "asc") filtrados.sort((a, b) => a.price - b.price);
+    else if (ordem === "desc") filtrados.sort((a, b) => b.price - a.price);
+
+    renderizarProdutos(filtrados);
+}
+
+// ---------- CESTO ----------
+function adicionarAoCesto(produto) {
     cesto.push(produto);
     total += produto.price;
     renderizarCesto();
@@ -64,7 +96,7 @@ function adicionarAoCesto(id) {
 }
 
 function removerDoCesto(id) {
-    const index = cesto.findIndex(item => item.id === id);
+    const index = cesto.findIndex(p => p.id === id);
     if (index !== -1) {
         total -= cesto[index].price;
         cesto.splice(index, 1);
@@ -74,37 +106,29 @@ function removerDoCesto(id) {
 }
 
 function renderizarCesto() {
-    const listaCesto = document.getElementById("lista-cesto");
+    const lista = document.getElementById("lista-cesto");
     const totalDisplay = document.getElementById("total");
-    listaCesto.innerHTML = "";
+    lista.innerHTML = "";
 
     cesto.forEach(item => {
         const artigo = document.createElement("article");
         artigo.classList.add("produto");
 
-        const titulo = document.createElement("h4");
-        titulo.textContent = item.title;
+        artigo.innerHTML = `
+      <h4>${item.title}</h4>
+      <img src="${item.image}" alt="${item.title}">
+      <p>Custo total: ${item.price.toFixed(2)} €</p>
+      <button class="btn-remover">- Remover do Cesto</button>
+    `;
 
-        const imagem = document.createElement("img");
-        imagem.src = item.image;
-        imagem.alt = item.title;
-
-        const preco = document.createElement("p");
-        preco.textContent = `Custo total: ${item.price.toFixed(2)} €`;
-
-        const botaoRemover = document.createElement("button");
-        botaoRemover.textContent = "- Remover do Cesto";
-        botaoRemover.classList.add("btn-remover");
-        botaoRemover.addEventListener("click", () => removerDoCesto(item.id));
-
-        artigo.append(titulo, imagem, preco, botaoRemover);
-        listaCesto.append(artigo);
+        artigo.querySelector(".btn-remover").addEventListener("click", () => removerDoCesto(item.id));
+        lista.appendChild(artigo);
     });
 
     totalDisplay.textContent = `Custo total: ${total.toFixed(2)} €`;
 }
 
-//LOCAL STORAGE
+// ---------- LOCAL STORAGE ----------
 function salvarNoLocalStorage() {
     localStorage.setItem("cesto", JSON.stringify(cesto));
     localStorage.setItem("total", total);
@@ -116,5 +140,46 @@ function carregarDoLocalStorage() {
     renderizarCesto();
 }
 
-// Carrega o cesto salvo ao iniciar
-document.addEventListener("DOMContentLoaded", carregarDoLocalStorage);
+// ---------- CHECKOUT (POST /buy) ----------
+const btnComprar = document.getElementById("btn-comprar");
+const inputEstudante = document.getElementById("estudante");
+const inputCupao = document.getElementById("cupao");
+const resultadoCompra = document.getElementById("resultado-compra");
+
+btnComprar.addEventListener("click", () => {
+    if (cesto.length === 0) {
+        alert("O cesto está vazio!");
+        return;
+    }
+
+    const idsProdutos = cesto.map(p => p.id);
+
+    const dadosCompra = {
+        products: idsProdutos,
+        student: inputEstudante.checked,
+        discount: inputCupao.value.trim() || null
+    };
+
+    fetch(`${API_URL}/buy`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dadosCompra)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                resultadoCompra.innerHTML = `<p style="color:red;">Erro: ${data.error}</p>`;
+                return;
+            }
+
+            resultadoCompra.innerHTML = `
+        <h3>✅ Compra efetuada com sucesso!</h3>
+        <p><strong>Valor final a pagar (com eventuais descontos):</strong> ${data.total.toFixed(2)} €</p>
+        <p><strong>Referência de pagamento:</strong> ${data.reference}</p>
+      `;
+        })
+        .catch(error => {
+            console.error("Erro na compra:", error);
+            resultadoCompra.innerHTML = `<p style="color:red;">Ocorreu um erro ao processar a compra.</p>`;
+        });
+});

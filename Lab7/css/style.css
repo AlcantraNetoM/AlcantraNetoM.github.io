@@ -1,11 +1,14 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     margin: 0;
-    background-color: #eee;
+    color: #222;
+    background-image: url('https://cdn.pixabay.com/photo/2016/06/02/02/33/triangles-1430105_1280.png');
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 header {
-    background-color: purple;
+    background: rgba(75, 0, 130, 0.9);
     color: white;
     padding: 1rem 2rem;
     display: flex;
@@ -13,14 +16,46 @@ header {
     align-items: center;
 }
 
-header h1 {
-    margin: 0;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo img {
+    height: 50px;
+    width: 50px;
 }
 
 nav a {
     color: white;
     margin-left: 1rem;
     text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.filtros {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem auto;
+    width: 80%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+select,
+input {
+    padding: 0.4rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
 .produtos {
@@ -34,10 +69,15 @@ nav a {
 .produto {
     background: white;
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: 12px;
     width: 250px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
     text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.produto:hover {
+    transform: scale(1.05);
 }
 
 .produto img {
@@ -48,7 +88,7 @@ nav a {
 
 .produto button {
     margin-top: 10px;
-    background-color: purple;
+    background-color: #6a0dad;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -57,18 +97,18 @@ nav a {
 }
 
 .produto button:hover {
-    background-color: #6a0dad;
+    background-color: #520b91;
 }
 
 .cesto {
     text-align: center;
-    background-color: purple;
+    background-color: rgba(75, 0, 130, 0.9);
     color: white;
     padding: 2rem 0;
     margin-top: 2rem;
 }
 
-#lista-cesto {
+.lista-cesto {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -80,11 +120,8 @@ nav a {
     background: white;
     color: black;
     border-radius: 10px;
-    display: inline-block;
     width: 220px;
-    margin: 10px;
     padding: 1rem;
-    text-align: center;
 }
 
 .cesto .produto img {
@@ -107,23 +144,48 @@ nav a {
     background-color: #bbb;
 }
 
-#btn-limpar {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
+.checkout {
+    margin-top: 1.5rem;
+    background: white;
+    color: black;
+    border-radius: 10px;
+    padding: 1rem;
+    display: inline-block;
+    text-align: left;
 }
 
-#btn-limpar:hover {
-    background-color: #d32f2f;
+.checkout input[type="text"] {
+    padding: 0.3rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.checkout button {
+    margin-top: 10px;
+    background-color: purple;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.checkout button:hover {
+    background-color: #6a0dad;
+}
+
+.resultado-compra {
+    margin-top: 1rem;
+    background: linear-gradient(to bottom, #fff, #eee);
+    color: black;
+    border-radius: 10px;
+    padding: 1rem;
+    display: inline-block;
 }
 
 footer {
     text-align: center;
     padding: 1rem;
-    background-color: #222;
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
 }
