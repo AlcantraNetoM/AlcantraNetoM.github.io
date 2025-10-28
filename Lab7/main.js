@@ -1,113 +1,120 @@
-const produtosContainer = document.getElementById('produtos');
-const listaCesto = document.getElementById('lista-cesto');
-const totalDisplay = document.getElementById('total');
-const btnLimpar = document.getElementById('btn-limpar');
+// Espera até que o DOM esteja completamente carregado
+document.addEventListener("DOMContentLoaded", () => {
+    carregarProdutos(produtos);
+});
+
+// Função principal: recebe a lista de produtos e renderiza-os no DOM
+function carregarProdutos(listaProdutos) {
+    const secaoProdutos = document.getElementById("produtos");
+
+    // percorre todos os produtos da lista
+    listaProdutos.forEach(produto => {
+        console.log(produto.id, produto.title);
+
+        const artigo = criarProduto(produto);
+        secaoProdutos.append(artigo);
+    });
+}
+
+// Cria e retorna um elemento <article> com as informações do produto
+function criarProduto(produto) {
+    const article = document.createElement("article");
+    article.classList.add("produto");
+
+    // Título
+    const titulo = document.createElement("h3");
+    titulo.textContent = produto.title;
+
+    // Imagem
+    const imagem = document.createElement("img");
+    imagem.src = produto.image;
+    imagem.alt = produto.title;
+
+    // Descrição
+    const descricao = document.createElement("p");
+    descricao.textContent = produto.description.substring(0, 100) + "...";
+
+    // Preço
+    const preco = document.createElement("p");
+    preco.innerHTML = `<strong>${produto.price.toFixed(2)} €</strong>`;
+
+    // Botão de adicionar
+    const botao = document.createElement("button");
+    botao.textContent = "+ Adicionar ao Cesto";
+    botao.dataset.id = produto.id;
+    botao.addEventListener("click", () => adicionarAoCesto(produto.id));
+
+    //Estrutura do artigo
+    article.append(titulo, imagem, descricao, preco, botao);
+
+    return article;
+}
 
 let cesto = [];
 let total = 0;
 
-function renderProdutos() {
-    produtos.forEach(produto => {
-        const card = document.createElement('div');
-        card.classList.add('produto');
-
-        card.innerHTML = `
-      <img src="${produto.image}" alt="${produto.title}">
-      <h3>${produto.title}</h3>
-      <p>${produto.description.substring(0, 100)}...</p>
-      <p><strong>${produto.price.toFixed(2)} €</strong></p>
-      <button data-id="${produto.id}">+ Adicionar ao Cesto</button>
-    `;
-
-        produtosContainer.appendChild(card);
-    });
-}
-
-function renderCesto() {
-    listaCesto.innerHTML = '';
-
-    cesto.forEach(item => {
-        const card = document.createElement('div');
-        card.classList.add('produto');
-
-        card.innerHTML = `
-      <h4>${item.title}</h4>
-      <img src="${item.image}" alt="${item.title}">
-      <p>Custo total: ${item.price.toFixed(2)} €</p>
-      <button class="btn-remover" data-id="${item.id}">- Remover do Cesto</button>
-    `;
-
-        listaCesto.appendChild(card);
-    });
-
-    totalDisplay.textContent = `Custo total: ${total.toFixed(2)} €`;
-}
-
-// Adiciona produto ao cesto
 function adicionarAoCesto(id) {
     const produto = produtos.find(p => p.id === id);
     if (!produto) return;
 
     cesto.push(produto);
     total += produto.price;
-
+    renderizarCesto();
     salvarNoLocalStorage();
-    renderCesto();
 }
 
-// Remove produto do cesto
 function removerDoCesto(id) {
     const index = cesto.findIndex(item => item.id === id);
     if (index !== -1) {
         total -= cesto[index].price;
         cesto.splice(index, 1);
+        renderizarCesto();
         salvarNoLocalStorage();
-        renderCesto();
     }
 }
 
-// Esvaziar o cesto completamente
-function limparCesto() {
-    cesto = [];
-    total = 0;
-    salvarNoLocalStorage();
-    renderCesto();
-}
+function renderizarCesto() {
+    const listaCesto = document.getElementById("lista-cesto");
+    const totalDisplay = document.getElementById("total");
+    listaCesto.innerHTML = "";
 
-function configurarEventos() {
-    // Adicionar produto
-    produtosContainer.addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') {
-            const id = parseInt(e.target.dataset.id);
-            adicionarAoCesto(id);
-        }
+    cesto.forEach(item => {
+        const artigo = document.createElement("article");
+        artigo.classList.add("produto");
+
+        const titulo = document.createElement("h4");
+        titulo.textContent = item.title;
+
+        const imagem = document.createElement("img");
+        imagem.src = item.image;
+        imagem.alt = item.title;
+
+        const preco = document.createElement("p");
+        preco.textContent = `Custo total: ${item.price.toFixed(2)} €`;
+
+        const botaoRemover = document.createElement("button");
+        botaoRemover.textContent = "- Remover do Cesto";
+        botaoRemover.classList.add("btn-remover");
+        botaoRemover.addEventListener("click", () => removerDoCesto(item.id));
+
+        artigo.append(titulo, imagem, preco, botaoRemover);
+        listaCesto.append(artigo);
     });
 
-    // Remover produto
-    listaCesto.addEventListener('click', (e) => {
-        if (e.target.classList.contains('btn-remover')) {
-            const id = parseInt(e.target.dataset.id);
-            removerDoCesto(id);
-        }
-    });
-
-    // Esvaziar cesto
-    btnLimpar.addEventListener('click', limparCesto);
+    totalDisplay.textContent = `Custo total: ${total.toFixed(2)} €`;
 }
 
-// LocalStorage
+//LOCAL STORAGE
 function salvarNoLocalStorage() {
-    localStorage.setItem('cesto', JSON.stringify(cesto));
-    localStorage.setItem('total', total);
+    localStorage.setItem("cesto", JSON.stringify(cesto));
+    localStorage.setItem("total", total);
 }
 
 function carregarDoLocalStorage() {
-    cesto = JSON.parse(localStorage.getItem('cesto')) || [];
-    total = parseFloat(localStorage.getItem('total')) || 0;
-    renderCesto();
+    cesto = JSON.parse(localStorage.getItem("cesto")) || [];
+    total = parseFloat(localStorage.getItem("total")) || 0;
+    renderizarCesto();
 }
 
-// Inicialização
-renderProdutos();
-configurarEventos();
-carregarDoLocalStorage();
+// Carrega o cesto salvo ao iniciar
+document.addEventListener("DOMContentLoaded", carregarDoLocalStorage);
