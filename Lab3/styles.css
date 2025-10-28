@@ -2,196 +2,87 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
 }
 
 body {
     background-color: #f0f0f5;
     color: #333;
+    font-family: Arial, sans-serif;
     line-height: 1.6;
-    padding: 0;
-    margin: 0;
+    padding: 20px;
 }
 
 header {
     background-color: #6a5acd;
     color: white;
     text-align: center;
-    padding: 15px 0;
+    padding: 20px 0;
 }
 
-header h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+nav {
+    margin-top: 10px;
 }
 
-.nav-links {
+nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
     gap: 20px;
-    flex-wrap: wrap;
+    padding: 0;
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.nav-links a:hover {
-    background-color: #ff6600;
-    color: white;
-}
-
-.hero {
-    position: relative;
-    height: 80vh;
-    background-image: url("../imagens/lisboa.jpg");
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hero-content {
-    position: absolute;
-    text-align: center;
-    color: white;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-}
-
-.hero-content h2 {
-    font-size: 3vw;
-}
-
-.hero-content p {
-    font-size: 1.5vw;
-    margin: 1rem 0;
-}
-
-.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #ff6600;
-    color: white;
+nav ul li a {
+    color: green;
     text-decoration: none;
     font-weight: bold;
-    border-radius: 8px;
-    transition: 0.3s;
 }
 
-.btn:hover {
-    transform: scale(1.05);
-    background-color: #e65c00;
+nav ul li a:hover {
+    text-decoration: underline;
 }
 
-.cards-container {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 30px 20px;
-    background-color: #f0f0f5;
-}
-
-.card {
-    background-color: #fffacd;
-    width: 250px;
-    text-align: center;
+main {
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.btn-card {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 16px;
-    background-color: #0077cc;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-card:hover {
-    background-color: #005fa3;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.info-grid section {
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #f8f8f8;
-}
-
-.info-grid img {
-    width: 100%;
-    border-radius: 10px;
-}
-
-.local-container {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    flex-wrap: wrap;
-}
-
-.local-texto, .local-mapa {
-    flex: 1 1 400px;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #d1ffd6;
-}
-
-.local-mapa iframe {
-    width: 100%;
-    height: 350px;
-    border: 0;
-}
-
-.fotografias {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin: 10px 0;
-}
-
-.fotografias img {
-    width: 150px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    transition: transform 0.3s;
-}
-
-.fotografias img:hover {
-    transform: scale(1.05);
-}
-
-iframe {
-    width: 100%;
-    max-width: 600px;
-    height: 350px;
+main img {
     display: block;
+    max-width: 100%;
+    height: auto;
     margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+    background-color: #6a5acd;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    border-radius: 0 0 10px 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th {
+    background-color: #6a5acd;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 8px;
+    border: 1px solid #ccc;
 }
 
 .poema {
@@ -214,37 +105,28 @@ iframe {
     font-weight: bold;
 }
 
-.imagem-emblematica {
-    position: relative;
-    margin: 20px 0;
+.fotografias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
 
-.imagem-emblematica img {
-    width: 100%;
+.fotografias img {
+    width: 150px;
     border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
 }
 
-.frase-emblematica {
-    position: absolute;
-    top: 40%;
-    left: 10%;
-    color: white;
-    font-size: 4vw;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+.fotografias img:hover {
+    transform: scale(1.05);
 }
 
-footer {
-    text-align: center;
-    padding: 15px;
-    background-color: #6a5acd;
-    color: black;
-    border-radius: 0 0 10px 10px;
-    margin-top: 20px;
-}
-
-@media (max-width: 768px) {
-    .hero-content h2 { font-size: 6vw; }
-    .hero-content p { font-size: 4vw; }
-
-    .local-container { flex-direction: column; }
+iframe {
+    width: 100%;
+    max-width: 600px;
+    height: 350px;
+    display: block;
+    margin: 20px auto;
 }

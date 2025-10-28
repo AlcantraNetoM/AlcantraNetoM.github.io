@@ -1,11 +1,9 @@
-/* Reset simples */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Corpo da página */
 body {
     background-color: #f0f0f5;
     color: #333;
@@ -14,7 +12,6 @@ body {
     padding: 20px;
 }
 
-/* Cabeçalho */
 header {
     background-color: #6a5acd;
     color: white;
@@ -22,7 +19,6 @@ header {
     padding: 20px 0;
 }
 
-/* Navegação */
 nav {
     margin-top: 10px;
 }
@@ -45,24 +41,21 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
-/* Conteúdo principal */
 main {
     padding: 20px;
     max-width: 1000px;
     margin: 0 auto;
 }
 
-/* Imagem representativa */
 main img {
     display: block;
     max-width: 100%;
     height: auto;
-    margin: 20px auto; /* espaçamento vertical */
+    margin: 20px auto;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Footer */
 footer {
     background-color: #6a5acd;
     color: black;
@@ -72,7 +65,6 @@ footer {
     border-radius: 0 0 10px 10px;
 }
 
-/* Tabela (info.html) */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -93,7 +85,6 @@ td {
     border: 1px solid #ccc;
 }
 
-/* Poema (multimedia.html) */
 .poema {
     font-family: 'Georgia', serif;
     font-size: 1.2rem;
@@ -114,7 +105,6 @@ td {
     font-weight: bold;
 }
 
-/* Galeria de fotografias */
 .fotografias {
     display: flex;
     flex-wrap: wrap;
@@ -125,7 +115,7 @@ td {
 .fotografias img {
     width: 150px;
     border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s;
 }
 
@@ -133,7 +123,6 @@ td {
     transform: scale(1.05);
 }
 
-/* Secção Vídeo */
 iframe {
     width: 100%;
     max-width: 600px;
