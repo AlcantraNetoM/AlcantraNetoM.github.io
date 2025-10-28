@@ -1,116 +1,113 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializa o cesto no localStorage, se ainda não existir
-    if (!localStorage.getItem('produtos-selecionados')) {
-        localStorage.setItem('produtos-selecionados', JSON.stringify([]));
-    }
+const produtosContainer = document.getElementById('produtos');
+const listaCesto = document.getElementById('lista-cesto');
+const totalDisplay = document.getElementById('total');
+const btnLimpar = document.getElementById('btn-limpar');
 
-    // Renderiza os produtos se estiver na página de produtos
-    const listaProdutosEl = document.getElementById('lista-produtos');
-    if (listaProdutosEl) {
-        carregarProdutos(produtos);
-    }
+let cesto = [];
+let total = 0;
 
-    // Atualiza o cesto (para cesto.html ou contador no header)
-    atualizarCesto();
-    atualizarContador();
-});
+function renderProdutos() {
+    produtos.forEach(produto => {
+        const card = document.createElement('div');
+        card.classList.add('produto');
 
-// Renderiza a lista de produtos na página principal
-function carregarProdutos(listaProdutos) {
-    const container = document.getElementById('lista-produtos');
-    listaProdutos.forEach(produto => container.appendChild(criarProduto(produto)));
+        card.innerHTML = `
+      <img src="${produto.image}" alt="${produto.title}">
+      <h3>${produto.title}</h3>
+      <p>${produto.description.substring(0, 100)}...</p>
+      <p><strong>${produto.price.toFixed(2)} €</strong></p>
+      <button data-id="${produto.id}">+ Adicionar ao Cesto</button>
+    `;
+
+        produtosContainer.appendChild(card);
+    });
 }
 
-// Cria um produto individual (article) com botão de adicionar
-function criarProduto(produto) {
-    const article = document.createElement('article');
+function renderCesto() {
+    listaCesto.innerHTML = '';
 
-    const h3 = document.createElement('h3'); h3.textContent = produto.title;
-    const img = document.createElement('img'); img.src = produto.image; img.alt = produto.title;
-    const descricao = document.createElement('p'); descricao.textContent = produto.description;
-    const preco = document.createElement('p'); preco.textContent = produto.price + ' €';
+    cesto.forEach(item => {
+        const card = document.createElement('div');
+        card.classList.add('produto');
 
-    const btn = document.createElement('button');
-    btn.textContent = '+ Adicionar ao Cesto';
+        card.innerHTML = `
+      <h4>${item.title}</h4>
+      <img src="${item.image}" alt="${item.title}">
+      <p>Custo total: ${item.price.toFixed(2)} €</p>
+      <button class="btn-remover" data-id="${item.id}">- Remover do Cesto</button>
+    `;
 
-    // Evento para adicionar ao cesto
-    btn.addEventListener('click', () => {
-        const cesto = JSON.parse(localStorage.getItem('produtos-selecionados'));
-        cesto.push(produto);
-        localStorage.setItem('produtos-selecionados', JSON.stringify(cesto));
-        mostrarToast(`✔ "${produto.title}" adicionado ao cesto!`);
-        atualizarCesto();
-        atualizarContador();
+        listaCesto.appendChild(card);
     });
 
-    article.append(h3, img, descricao, preco, btn);
-    return article;
+    totalDisplay.textContent = `Custo total: ${total.toFixed(2)} €`;
 }
 
-// Atualiza o cesto (cesto.html)
-function atualizarCesto() {
-    const container = document.getElementById('lista-cesto');
-    if (!container) return; // se não tiver container, não faz nada
+// Adiciona produto ao cesto
+function adicionarAoCesto(id) {
+    const produto = produtos.find(p => p.id === id);
+    if (!produto) return;
 
-    container.innerHTML = '';
-    const cesto = JSON.parse(localStorage.getItem('produtos-selecionados'));
-    let total = 0;
+    cesto.push(produto);
+    total += produto.price;
 
-    cesto.forEach((prod, index) => {
-        const article = document.createElement('article');
+    salvarNoLocalStorage();
+    renderCesto();
+}
 
-        const h3 = document.createElement('h3'); h3.textContent = prod.title;
-        const img = document.createElement('img'); img.src = prod.image; img.alt = prod.title;
-        const preco = document.createElement('p'); preco.textContent = prod.price + ' €';
+// Remove produto do cesto
+function removerDoCesto(id) {
+    const index = cesto.findIndex(item => item.id === id);
+    if (index !== -1) {
+        total -= cesto[index].price;
+        cesto.splice(index, 1);
+        salvarNoLocalStorage();
+        renderCesto();
+    }
+}
 
-        const btnRemover = document.createElement('button');
-        btnRemover.textContent = 'Remover';
+// Esvaziar o cesto completamente
+function limparCesto() {
+    cesto = [];
+    total = 0;
+    salvarNoLocalStorage();
+    renderCesto();
+}
 
-        btnRemover.addEventListener('click', () => {
-            cesto.splice(index, 1); // remove o produto da lista
-            localStorage.setItem('produtos-selecionados', JSON.stringify(cesto));
-            atualizarCesto();
-            atualizarContador();
-        });
-
-        article.append(h3, img, preco, btnRemover);
-        container.appendChild(article);
-
-        total += prod.price;
+function configurarEventos() {
+    // Adicionar produto
+    produtosContainer.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const id = parseInt(e.target.dataset.id);
+            adicionarAoCesto(id);
+        }
     });
 
-    // Atualiza o total somente se existir o elemento na página
-    const totalEl = document.getElementById('total-cesto');
-    if (totalEl) totalEl.textContent = total.toFixed(2);
+    // Remover produto
+    listaCesto.addEventListener('click', (e) => {
+        if (e.target.classList.contains('btn-remover')) {
+            const id = parseInt(e.target.dataset.id);
+            removerDoCesto(id);
+        }
+    });
+
+    // Esvaziar cesto
+    btnLimpar.addEventListener('click', limparCesto);
 }
 
-// Atualiza o contador do cesto no header
-function atualizarContador() {
-    const contador = document.getElementById('contador-cesto');
-    if (!contador) return;
-
-    const cesto = JSON.parse(localStorage.getItem('produtos-selecionados'));
-    contador.textContent = cesto.length;
+// LocalStorage
+function salvarNoLocalStorage() {
+    localStorage.setItem('cesto', JSON.stringify(cesto));
+    localStorage.setItem('total', total);
 }
 
-// Pequeno toast de feedback visual
-function mostrarToast(msg) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = msg;
-    document.body.appendChild(toast);
-
-    // Aplica animação simples
-    toast.style.opacity = 0;
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.backgroundColor = '#0074d9';
-    toast.style.color = 'white';
-    toast.style.padding = '10px 15px';
-    toast.style.borderRadius = '5px';
-    toast.style.transition = 'opacity 0.4s ease';
-
-    setTimeout(() => toast.style.opacity = 1, 10);
-    setTimeout(() => { toast.style.opacity = 0; setTimeout(() => toast.remove(), 400); }, 1500);
+function carregarDoLocalStorage() {
+    cesto = JSON.parse(localStorage.getItem('cesto')) || [];
+    total = parseFloat(localStorage.getItem('total')) || 0;
+    renderCesto();
 }
+
+// Inicialização
+renderProdutos();
+configurarEventos();
+carregarDoLocalStorage();

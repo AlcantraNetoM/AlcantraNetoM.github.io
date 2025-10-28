@@ -1,36 +1,34 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja Online - Lab 6</title>
+    <title>Loja</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
     <header>
         <h1>Loja</h1>
         <nav>
-            <ul>
-                <li><a href="index.html" class="ativo">Produtos</a></li>
-                <li><a href="cesto.html">Cesto (<span id="contador-cesto">0</span>)</a></li>
-            </ul>
+            <a href="#">Produtos</a>
+            <a href="#">Cesto</a>
         </nav>
     </header>
 
     <main>
-        <section id="produtos">
-            <h2>Produtos Disponíveis</h2>
-            <section id="lista-produtos" class="flex-container">
-                <!-- Produtos serão inseridos usando JavaScript -->
-            </section>
+        <section id="produtos" class="produtos"></section>
+
+        <section class="cesto">
+            <h2>Produtos Selecionados</h2>
+            <ul id="lista-cesto"></ul>
+            <p id="total">Custo total: 0.00 €</p>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Minha Loja Online by Alcantra Manuel.</p>
+        <p>2024</p>
     </footer>
 
     <script src="produtos.js"></script>
