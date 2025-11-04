@@ -13,7 +13,7 @@ let produtos = [];
 let cesto = [];
 let total = 0;
 
-// ---------- FETCH DE PRODUTOS ----------
+//Fetch de produtos
 function carregarProdutos(categoria = "") {
     let url = `${API_URL}/products`;
     if (categoria && categoria !== "all") url += `/category/${categoria}`;
@@ -27,7 +27,7 @@ function carregarProdutos(categoria = "") {
         .catch(error => console.error("Erro ao carregar produtos:", error));
 }
 
-// ---------- FETCH DE CATEGORIAS ----------
+//Fetch de categorias
 function carregarCategorias() {
     fetch(`${API_URL}/categories`)
         .then(response => response.json())
@@ -43,7 +43,7 @@ function carregarCategorias() {
         .catch(error => console.error("Erro ao carregar categorias:", error));
 }
 
-// ---------- RENDERIZAR PRODUTOS ----------
+//renderizacao dos produtos
 function renderizarProdutos(lista) {
     const container = document.getElementById("produtos");
     container.innerHTML = "";
@@ -67,7 +67,7 @@ function renderizarProdutos(lista) {
     });
 }
 
-// ---------- FILTROS / SORT / SEARCH ----------
+//Filtros / Sort / Search
 function aplicarFiltros() {
     const categoria = document.getElementById("filtro").value;
     const ordem = document.getElementById("ordenar").value;
@@ -87,7 +87,7 @@ function aplicarFiltros() {
     renderizarProdutos(filtrados);
 }
 
-// ---------- CESTO ----------
+//Cesto
 function adicionarAoCesto(produto) {
     cesto.push(produto);
     total += produto.price;
@@ -128,7 +128,7 @@ function renderizarCesto() {
     totalDisplay.textContent = `Custo total: ${total.toFixed(2)} €`;
 }
 
-// ---------- LOCAL STORAGE ----------
+//LOCAL STORAGE
 function salvarNoLocalStorage() {
     localStorage.setItem("cesto", JSON.stringify(cesto));
     localStorage.setItem("total", total);
@@ -140,7 +140,7 @@ function carregarDoLocalStorage() {
     renderizarCesto();
 }
 
-// ---------- CHECKOUT (POST /buy) ----------
+//CHECKOUT(POST /buy)
 const btnComprar = document.getElementById("btn-comprar");
 const inputEstudante = document.getElementById("estudante");
 const inputCupao = document.getElementById("cupao");
