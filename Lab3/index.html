@@ -1,31 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <title>Lisboa - Início</title>
 </head>
 
 <body>
-
-    <header>
+    <header class="site-header">
         <h1>Lisboa</h1>
-        <p>Capital de Portugal</p>
+        <p class="subtitle">Capital de Portugal</p>
+
+        <nav class="city-nav">
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Início</a></li>
+                <li><a href="info.html">Informação</a></li>
+                <li><a href="local.html">Local</a></li>
+                <li><a href="multimedia.html">Multimédia</a></li>
+            </ul>
+        </nav>
+
     </header>
 
-    <nav>
-
-        <a href="index.html">Início</a>
-        <a href="info.html">Informações</a>
-        <a href="local.html">Localização</a>
-        <a href="multimedia.html">multimedia</a>
-
-    </nav>
-
     <main>
-        <a href="/imagens/hero-image.jpg"></a>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Bem-vindo a Lisboa</h2>
+                <p>A cidade da luz, tradição e inovação.</p>
+
+                <div class="hero-actions">
+                    <a href="info.html" class="btn">Explorar informação</a>
+                    <a href="multimedia.html" class="btn btn-outline">Ver multimédia</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block">
+            <h3>O que vais encontrar</h3>
+
+            <div class="cards">
+                <article class="card card-relative">
+                    <span class="badge">Destaque</span>
+                    <h4>Informação</h4>
+                    <p>Dados, curiosidades, etc.</p>
+                    <a href="info.html" class="card-link">Abrir página</a>
+                </article>
+
+                <article class="card">
+                    <h4>Localização</h4>
+                    <p>Mapa, endereço, etc.</p>
+                    <a href="local.html" class="card-link">Abrir página</a>
+                </article>
+
+                <article class="card">
+                    <h4>Multimédia</h4>
+                    <p>Galeria, vídeo, poesia e imagens.</p>
+                    <a href="multimedia.html" class="card-link">Abrir página</a>
+                </article>
+            </div>
+        </section>
     </main>
+
+    <footer>
+        <p>© 2025 Universidade Lusófona</p>
+    </footer>
 </body>
 
 </html>

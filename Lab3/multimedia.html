@@ -9,13 +9,31 @@
 </head>
 
 <body>
+    <header class="site-header">
+        <h1>Lisboa</h1>
+        <p class="subtitle">Multimédia</p>
+
+        <nav class="city-nav">
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Início</a></li>
+                <li><a href="info.html">Informação</a></li>
+                <li><a href="local.html">Local</a></li>
+                <li><a href="multimedia.html">Multimédia</a></li>
+            </ul>
+        </nav>
+
+    </header>
 
     <main>
-        <h2>Multimédia</h2>
-        <p>Nesta página encontra conteúdos multimédia.</p>
+        <section class="banner">
+            <img src="../imagens/pexels-pixabay-415947.jpg" alt="Vista de Lisboa">
+            <p class="banner-quote">Lisboa é luz, história e identidade.</p>
+        </section>
 
-        <section id="fotografias">
+        <section class="section-block section-alt">
             <h3>Fotografias</h3>
+            <p class="section-desc">Galeria com efeitos de transição.</p>
+
             <div class="fotografias">
                 <img src="../imagens/lisboa.jpg" alt="Teleférico do Vasco da Gama">
                 <img src="../imagens/lisboa1.jpg" alt="Belém">
@@ -23,21 +41,26 @@
                 <img src="../imagens/lisboa3.jpg" alt="Rossio">
                 <img src="../imagens/lisboa4.jpg" alt="Belém">
                 <img src="../imagens/lisboa5.jpg" alt="Ponte 25 de Abril">
-                <img src="../imagens/lisboa6.jpg" alt="Estação de comboios Vasco da Gama">
+                <img src="../imagens/lisboa6.jpg" alt="Estação Vasco da Gama">
                 <img src="../imagens/lisboa7.jpg" alt="Largo do Rossio">
                 <img src="../imagens/lisboa8.jpg" alt="Parque Eduardo VII">
             </div>
         </section>
 
-        <section id="video">
+        <section class="section-block">
             <h3>Vídeo</h3>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/fhhFUbM0VJw?si=IXkp1ZAoBmSUqreW"
-                title="Vídeo sobre Lisboa" frameborder="0" allowfullscreen>
-            </iframe>
+            <p class="section-desc">Vídeo incorporado e responsivo.</p>
+
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/fhhFUbM0VJw" title="Vídeo sobre Lisboa"
+                    allowfullscreen></iframe>
+            </div>
         </section>
 
-        <section id="poesia">
+        <section class="section-block section-alt2">
             <h3>Poesia</h3>
+            <p class="section-desc">Texto estilizado com seletores CSS.</p>
+
             <div class="poema">
                 <p>Lisboa desperta ao som do Tejo,</p>
                 <p>Elétricos dançam nas ruas de pedra,</p>
@@ -49,6 +72,9 @@
         </section>
     </main>
 
+    <footer>
+        <p>© 2025 Universidade Lusófona</p>
+    </footer>
 </body>
 
 </html>
