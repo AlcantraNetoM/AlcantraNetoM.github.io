@@ -1,3 +1,8 @@
+const API_URL = "https://deisishop.pythonanywhere.com";
+
+let produtos = [];
+let cesto = [];
+
 document.addEventListener("DOMContentLoaded", () => {
     carregarCategorias();
     carregarProdutos();
@@ -6,31 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("filtro").addEventListener("change", aplicarFiltros);
     document.getElementById("ordenar").addEventListener("change", aplicarFiltros);
     document.getElementById("pesquisa").addEventListener("input", aplicarFiltros);
+
+    document.getElementById("btn-comprar").addEventListener("click", comprar);
 });
 
-const API_URL = "https://deisishop.pythonanywhere.com";
-let produtos = [];
-let cesto = [];
-let total = 0;
-
-//Fetch de produtos
-function carregarProdutos(categoria = "") {
-    let url = `${API_URL}/products`;
-    if (categoria && categoria !== "all") url += `/category/${categoria}`;
-
-    fetch(url)
-        .then(response => response.json())
+function carregarProdutos() {
+    fetch(`${API_URL}/products`)
+        .then(r => r.json())
         .then(data => {
             produtos = data;
-            renderizarProdutos(produtos);
+            aplicarFiltros();
         })
-        .catch(error => console.error("Erro ao carregar produtos:", error));
+        .catch(e => console.error("Erro ao carregar produtos:", e));
 }
 
-//Fetch de categorias
 function carregarCategorias() {
     fetch(`${API_URL}/categories`)
-        .then(response => response.json())
+        .then(r => r.json())
         .then(data => {
             const select = document.getElementById("filtro");
             data.forEach(cat => {
@@ -40,10 +37,26 @@ function carregarCategorias() {
                 select.appendChild(option);
             });
         })
-        .catch(error => console.error("Erro ao carregar categorias:", error));
+        .catch(e => console.error("Erro ao carregar categorias:", e));
 }
 
-//renderizacao dos produtos
+function aplicarFiltros() {
+    const categoria = document.getElementById("filtro").value;
+    const ordem = document.getElementById("ordenar").value;
+    const pesquisa = document.getElementById("pesquisa").value.toLowerCase().trim();
+
+    let lista = produtos.filter(p => p.title.toLowerCase().includes(pesquisa));
+
+    if (categoria !== "all") {
+        lista = lista.filter(p => p.category === categoria);
+    }
+
+    if (ordem === "asc") lista.sort((a, b) => a.price - b.price);
+    if (ordem === "desc") lista.sort((a, b) => b.price - a.price);
+
+    renderizarProdutos(lista);
+}
+
 function renderizarProdutos(lista) {
     const container = document.getElementById("produtos");
     container.innerHTML = "";
@@ -52,62 +65,60 @@ function renderizarProdutos(lista) {
         const article = document.createElement("article");
         article.classList.add("produto");
 
+        const desc = (produto.description || "").slice(0, 100);
+
         article.innerHTML = `
-      <img src="${produto.image}" alt="${produto.title}">
-      <h3>${produto.title}</h3>
-      <p>${produto.description.substring(0, 100)}...</p>
-      <p><strong>${produto.price.toFixed(2)} €</strong></p>
-      <button data-id="${produto.id}">+ Adicionar ao Cesto</button>
-    `;
+            <img src="${produto.image}" alt="${produto.title}">
+            <h3>${produto.title}</h3>
+            <p>${desc}${produto.description && produto.description.length > 100 ? "..." : ""}</p>
+            <p><strong>${Number(produto.price).toFixed(2)} €</strong></p>
+            <button type="button">+ Adicionar ao Cesto</button>
+        `;
 
-        const btn = article.querySelector("button");
-        btn.addEventListener("click", () => adicionarAoCesto(produto));
-
+        article.querySelector("button").addEventListener("click", () => adicionarAoCesto(produto));
         container.appendChild(article);
     });
 }
 
-//Filtros / Sort / Search
-function aplicarFiltros() {
-    const categoria = document.getElementById("filtro").value;
-    const ordem = document.getElementById("ordenar").value;
-    const pesquisa = document.getElementById("pesquisa").value.toLowerCase();
-
-    let filtrados = produtos.filter(p =>
-        p.title.toLowerCase().includes(pesquisa)
-    );
-
-    if (categoria !== "all") {
-        filtrados = filtrados.filter(p => p.category === categoria);
-    }
-
-    if (ordem === "asc") filtrados.sort((a, b) => a.price - b.price);
-    else if (ordem === "desc") filtrados.sort((a, b) => b.price - a.price);
-
-    renderizarProdutos(filtrados);
-}
-
-//Cesto
 function adicionarAoCesto(produto) {
-    cesto.push(produto);
-    total += produto.price;
+    const existente = cesto.find(i => i.id === produto.id);
+    if (existente) {
+        existente.qtd += 1;
+    } else {
+        cesto.push({
+            id: produto.id,
+            title: produto.title,
+            image: produto.image,
+            price: Number(produto.price),
+            qtd: 1
+        });
+    }
     renderizarCesto();
     salvarNoLocalStorage();
 }
 
 function removerDoCesto(id) {
-    const index = cesto.findIndex(p => p.id === id);
-    if (index !== -1) {
-        total -= cesto[index].price;
-        cesto.splice(index, 1);
-        renderizarCesto();
-        salvarNoLocalStorage();
+    const item = cesto.find(i => i.id === id);
+    if (!item) return;
+
+    if (item.qtd > 1) {
+        item.qtd -= 1;
+    } else {
+        cesto = cesto.filter(i => i.id !== id);
     }
+
+    renderizarCesto();
+    salvarNoLocalStorage();
+}
+
+function calcularTotal() {
+    return cesto.reduce((acc, i) => acc + (i.price * i.qtd), 0);
 }
 
 function renderizarCesto() {
     const lista = document.getElementById("lista-cesto");
     const totalDisplay = document.getElementById("total");
+
     lista.innerHTML = "";
 
     cesto.forEach(item => {
@@ -115,44 +126,47 @@ function renderizarCesto() {
         artigo.classList.add("produto");
 
         artigo.innerHTML = `
-      <h4>${item.title}</h4>
-      <img src="${item.image}" alt="${item.title}">
-      <p>Custo total: ${item.price.toFixed(2)} €</p>
-      <button class="btn-remover">- Remover do Cesto</button>
-    `;
+            <h4>${item.title}</h4>
+            <img src="${item.image}" alt="${item.title}">
+            <p>Preço: ${item.price.toFixed(2)} €</p>
+            <p>Quantidade: <strong>${item.qtd}</strong></p>
+            <button type="button" class="btn-remover">- Remover</button>
+        `;
 
         artigo.querySelector(".btn-remover").addEventListener("click", () => removerDoCesto(item.id));
         lista.appendChild(artigo);
     });
 
-    totalDisplay.textContent = `Custo total: ${total.toFixed(2)} €`;
+    totalDisplay.textContent = `Custo total: ${calcularTotal().toFixed(2)} €`;
 }
 
-//LOCAL STORAGE
 function salvarNoLocalStorage() {
     localStorage.setItem("cesto", JSON.stringify(cesto));
-    localStorage.setItem("total", total);
 }
 
 function carregarDoLocalStorage() {
     cesto = JSON.parse(localStorage.getItem("cesto")) || [];
-    total = parseFloat(localStorage.getItem("total")) || 0;
+    cesto = cesto.map(i => ({
+        id: i.id,
+        title: i.title,
+        image: i.image,
+        price: Number(i.price),
+        qtd: Number(i.qtd) || 1
+    }));
     renderizarCesto();
 }
 
-//CHECKOUT(POST /buy)
-const btnComprar = document.getElementById("btn-comprar");
-const inputEstudante = document.getElementById("estudante");
-const inputCupao = document.getElementById("cupao");
-const resultadoCompra = document.getElementById("resultado-compra");
+function comprar() {
+    const resultadoCompra = document.getElementById("resultado-compra");
+    const inputEstudante = document.getElementById("estudante");
+    const inputCupao = document.getElementById("cupao");
 
-btnComprar.addEventListener("click", () => {
     if (cesto.length === 0) {
         alert("O cesto está vazio!");
         return;
     }
 
-    const idsProdutos = cesto.map(p => p.id);
+    const idsProdutos = cesto.flatMap(item => Array(item.qtd).fill(item.id));
 
     const dadosCompra = {
         products: idsProdutos,
@@ -165,7 +179,7 @@ btnComprar.addEventListener("click", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dadosCompra)
     })
-        .then(response => response.json())
+        .then(r => r.json())
         .then(data => {
             if (data.error) {
                 resultadoCompra.innerHTML = `<p style="color:red;">Erro: ${data.error}</p>`;
@@ -173,13 +187,16 @@ btnComprar.addEventListener("click", () => {
             }
 
             resultadoCompra.innerHTML = `
-        <h3>✅ Compra efetuada com sucesso!</h3>
-        <p><strong>Valor final a pagar (com eventuais descontos):</strong> ${data.total.toFixed(2)} €</p>
-        <p><strong>Referência de pagamento:</strong> ${data.reference}</p>
-      `;
+                <h3>✅ Compra efetuada com sucesso!</h3>
+                <p><strong>Valor final a pagar:</strong> ${Number(data.total).toFixed(2)} €</p>
+                <p><strong>Referência de pagamento:</strong> ${data.reference}</p>
+            `;
+
+            cesto = [];
+            salvarNoLocalStorage();
+            renderizarCesto();
         })
-        .catch(error => {
-            console.error("Erro na compra:", error);
+        .catch(() => {
             resultadoCompra.innerHTML = `<p style="color:red;">Ocorreu um erro ao processar a compra.</p>`;
         });
-});
+}
