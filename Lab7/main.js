@@ -88,7 +88,7 @@ function renderizarProdutos(lista) {
             <p><strong>${Number(produto.price).toFixed(2)} €</strong></p>
             <button type="button" class="btn-add">+ Adicionar ao Cesto</button>
             <button type="button" class="btn-favorito ${favAtivo ? "ativo" : ""}">
-                ${favAtivo ? "⭐ Nos Favoritos" : "☆ Adicionar aos Favoritos"}
+                ${favAtivo ? " Nos Favoritos" : "Adicionar aos Favoritos"}
             </button>
         `;
 
