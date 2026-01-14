@@ -2,15 +2,20 @@ const API_URL = "https://deisishop.pythonanywhere.com";
 
 let produtos = [];
 let cesto = [];
+let favoritos = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarCategorias();
     carregarProdutos();
-    carregarDoLocalStorage();
+    carregarCestoDoLocalStorage();
+    carregarFavoritosDoLocalStorage();
 
     document.getElementById("filtro").addEventListener("change", aplicarFiltros);
     document.getElementById("ordenar").addEventListener("change", aplicarFiltros);
     document.getElementById("pesquisa").addEventListener("input", aplicarFiltros);
+
+    const soFav = document.getElementById("so-favoritos");
+    if (soFav) soFav.addEventListener("change", aplicarFiltros);
 
     document.getElementById("btn-comprar").addEventListener("click", comprar);
 });
@@ -21,6 +26,7 @@ function carregarProdutos() {
         .then(data => {
             produtos = data;
             aplicarFiltros();
+            renderizarFavoritos();
         })
         .catch(e => console.error("Erro ao carregar produtos:", e));
 }
@@ -45,10 +51,17 @@ function aplicarFiltros() {
     const ordem = document.getElementById("ordenar").value;
     const pesquisa = document.getElementById("pesquisa").value.toLowerCase().trim();
 
-    let lista = produtos.filter(p => p.title.toLowerCase().includes(pesquisa));
+    const soFavEl = document.getElementById("so-favoritos");
+    const soFavoritos = soFavEl ? soFavEl.checked : false;
+
+    let lista = produtos.filter(p => (p.title || "").toLowerCase().includes(pesquisa));
 
     if (categoria !== "all") {
         lista = lista.filter(p => p.category === categoria);
+    }
+
+    if (soFavoritos) {
+        lista = lista.filter(p => favoritos.includes(p.id));
     }
 
     if (ordem === "asc") lista.sort((a, b) => a.price - b.price);
@@ -66,16 +79,77 @@ function renderizarProdutos(lista) {
         article.classList.add("produto");
 
         const desc = (produto.description || "").slice(0, 100);
+        const favAtivo = favoritos.includes(produto.id);
 
         article.innerHTML = `
             <img src="${produto.image}" alt="${produto.title}">
             <h3>${produto.title}</h3>
             <p>${desc}${produto.description && produto.description.length > 100 ? "..." : ""}</p>
             <p><strong>${Number(produto.price).toFixed(2)} €</strong></p>
-            <button type="button">+ Adicionar ao Cesto</button>
+            <button type="button" class="btn-add">+ Adicionar ao Cesto</button>
+            <button type="button" class="btn-favorito ${favAtivo ? "ativo" : ""}">
+                ${favAtivo ? "⭐ Nos Favoritos" : "☆ Adicionar aos Favoritos"}
+            </button>
         `;
 
-        article.querySelector("button").addEventListener("click", () => adicionarAoCesto(produto));
+        article.querySelector(".btn-add").addEventListener("click", () => adicionarAoCesto(produto));
+        article.querySelector(".btn-favorito").addEventListener("click", () => alternarFavorito(produto.id));
+
+        container.appendChild(article);
+    });
+}
+
+function alternarFavorito(idProduto) {
+    if (favoritos.includes(idProduto)) {
+        favoritos = favoritos.filter(id => id !== idProduto);
+    } else {
+        favoritos.push(idProduto);
+    }
+    salvarFavoritosNoLocalStorage();
+    aplicarFiltros();        
+    renderizarFavoritos();   //atualiza os favoritos
+}
+
+function salvarFavoritosNoLocalStorage() {
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+}
+
+function carregarFavoritosDoLocalStorage() {
+    favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+    favoritos = favoritos.map(x => Number(x)).filter(x => Number.isFinite(x));
+}
+
+function renderizarFavoritos() {
+    const container = document.getElementById("lista-favoritos");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const listaFav = produtos.filter(p => favoritos.includes(p.id));
+
+    if (listaFav.length === 0) {
+        container.innerHTML = `<p>Ainda não tens favoritos.</p>`;
+        return;
+    }
+
+    listaFav.forEach(produto => {
+        const article = document.createElement("article");
+        article.classList.add("produto");
+
+        const desc = (produto.description || "").slice(0, 90);
+
+        article.innerHTML = `
+            <img src="${produto.image}" alt="${produto.title}">
+            <h3>${produto.title}</h3>
+            <p>${desc}${produto.description && produto.description.length > 90 ? "..." : ""}</p>
+            <p><strong>${Number(produto.price).toFixed(2)} €</strong></p>
+            <button type="button" class="btn-add">+ Adicionar ao Cesto</button>
+            <button type="button" class="btn-remover-fav">Remover ⭐</button>
+        `;
+
+        article.querySelector(".btn-add").addEventListener("click", () => adicionarAoCesto(produto));
+        article.querySelector(".btn-remover-fav").addEventListener("click", () => alternarFavorito(produto.id));
+
         container.appendChild(article);
     });
 }
@@ -94,7 +168,7 @@ function adicionarAoCesto(produto) {
         });
     }
     renderizarCesto();
-    salvarNoLocalStorage();
+    salvarCestoNoLocalStorage();
 }
 
 function removerDoCesto(id) {
@@ -108,7 +182,7 @@ function removerDoCesto(id) {
     }
 
     renderizarCesto();
-    salvarNoLocalStorage();
+    salvarCestoNoLocalStorage();
 }
 
 function calcularTotal() {
@@ -140,11 +214,11 @@ function renderizarCesto() {
     totalDisplay.textContent = `Custo total: ${calcularTotal().toFixed(2)} €`;
 }
 
-function salvarNoLocalStorage() {
+function salvarCestoNoLocalStorage() {
     localStorage.setItem("cesto", JSON.stringify(cesto));
 }
 
-function carregarDoLocalStorage() {
+function carregarCestoDoLocalStorage() {
     cesto = JSON.parse(localStorage.getItem("cesto")) || [];
     cesto = cesto.map(i => ({
         id: i.id,
@@ -187,13 +261,13 @@ function comprar() {
             }
 
             resultadoCompra.innerHTML = `
-                <h3>✅ Compra efetuada com sucesso!</h3>
+                <h3>Compra efetuada com sucesso!</h3>
                 <p><strong>Valor final a pagar:</strong> ${Number(data.total).toFixed(2)} €</p>
                 <p><strong>Referência de pagamento:</strong> ${data.reference}</p>
             `;
 
             cesto = [];
-            salvarNoLocalStorage();
+            salvarCestoNoLocalStorage();
             renderizarCesto();
         })
         .catch(() => {

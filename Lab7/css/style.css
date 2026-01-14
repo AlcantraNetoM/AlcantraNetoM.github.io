@@ -189,3 +189,40 @@ footer {
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
 }
+
+.favoritos {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.85);
+    margin: 1rem auto;
+    width: 90%;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.lista-favoritos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.btn-favorito {
+    margin-top: 10px;
+    background-color: #ffd54f;
+    color: #222;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.btn-favorito.ativo {
+    background-color: #ffb300;
+}
+
+.btn-favorito:hover {
+    filter: brightness(0.95);
+}
